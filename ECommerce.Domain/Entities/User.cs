@@ -61,6 +61,24 @@ namespace ECommerce.Domain.Entities
         public void ChangeFullName(FullName fullName) => FullName = fullName;
         public void BlockedUser() => IsBlocked = true;
         public void UnBlockedUser() => IsBlocked = false;
+
+        public void AddRoles(List<Role> roles)
+        {
+            foreach (var role in roles)
+            {
+                if (!Roles.Any(x => x.Id == role.Id))
+                    Roles.Add(role);
+            }
+        }
+
+        public void RemoveRoles(List<Role> roles)
+        {
+            foreach(var role in roles)
+            {
+                if (Roles.Any(x => x.Id == role.Id))
+                    Roles.Remove(role);
+            }
+        }
         #endregion
     }
 }
