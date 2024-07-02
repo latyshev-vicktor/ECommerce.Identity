@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.DataAccess.Postgr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.Api", "ECommerce.Identity.Api\ECommerce.Api.csproj", "{825F30DB-6906-4F1D-8B33-2FED1A226328}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce..Application", "ECommerce.Identity.Application\ECommerce..Application.csproj", "{77B85EE2-8A27-4F62-B57B-039584BC11AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.Application", "ECommerce.Identity.Application\ECommerce.Application.csproj", "{77B85EE2-8A27-4F62-B57B-039584BC11AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.Infrastructure.Impl", "ECommerce.Infrastructure.Impl\ECommerce.Infrastructure.Impl.csproj", "{1ABD5E7C-B744-45A3-B271-C9F55D156B79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.Infrastructure.Impl", "ECommerce.Infrastructure.Impl\ECommerce.Infrastructure.Impl.csproj", "{1ABD5E7C-B744-45A3-B271-C9F55D156B79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

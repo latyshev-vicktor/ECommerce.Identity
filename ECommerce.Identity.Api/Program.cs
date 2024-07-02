@@ -1,3 +1,4 @@
+using ECommerce.Application;
 using ECommerce.DataAccess.Postgres;
 using System.Text.Json.Serialization;
 
@@ -13,7 +14,8 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddPostgres(builder.Configuration);
+builder.Services.AddPostgres(builder.Configuration)
+                .AddApplication();
 
 var app = builder.Build();
 
