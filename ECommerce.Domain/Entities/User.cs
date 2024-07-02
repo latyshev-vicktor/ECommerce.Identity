@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using ECommerce.Domain.DomainEvents;
 using ECommerce.Domain.Enums;
 using ECommerce.Domain.SeedWorks;
 using ECommerce.Domain.ValueObjects;
@@ -34,6 +35,8 @@ namespace ECommerce.Domain.Entities
             UserType = userType;
             Email = email;
             FullName = fullName;
+
+            AddDomainEvent(new CreatedUserEvent(userId, userName, email.Value));
         }
         #endregion
 

@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ECommerce.DataAccess.Postgres\ECommerce.DataAccess.Postgres.csproj" />
-    <ProjectReference Include="..\ECommerce.Identity.Application\ECommerce..Application.csproj" />
+    <ProjectReference Include="..\ECommerce.Identity.Application\ECommerce.Application.csproj" />
   </ItemGroup>
 
 </Project>
