@@ -27,7 +27,8 @@ namespace ECommerce.Domain.Entities
 
         protected User(
             Guid userId, string userName, string password,
-            UserType userType, Email email, FullName fullName)
+            UserType userType, Email email, 
+            FullName fullName, List<Role> roles)
         {
             Id = userId;
             UserName = userName;
@@ -35,13 +36,14 @@ namespace ECommerce.Domain.Entities
             UserType = userType;
             Email = email;
             FullName = fullName;
+            AddRoles(roles);
 
             AddDomainEvent(new CreatedUserEvent(userId, userName, email.Value));
         }
         #endregion
 
         public static Result<User> Create(Guid userId, string userName, string password,
-            int userType, string email, string firstName, string lastName)
+            int userType, string email, string firstName, string lastName, List<Role> roles)
         {
             if (string.IsNullOrEmpty(userName)) return Result.Failure<User>("User name не может быть пустым");
             if (string.IsNullOrWhiteSpace(password)) return Result.Failure<User>("Пароль не может быть пустым");
@@ -55,7 +57,7 @@ namespace ECommerce.Domain.Entities
             if (fullNameResult.IsFailure)
                 return Result.Failure<User>(fullNameResult.Error);
 
-            return Result.Success(new User(userId, userName, password, userTypeEnum, emailResult.Value, fullNameResult.Value));
+            return Result.Success(new User(userId, userName, password, userTypeEnum, emailResult.Value, fullNameResult.Value, roles));
         }
 
         #region DDD методы
