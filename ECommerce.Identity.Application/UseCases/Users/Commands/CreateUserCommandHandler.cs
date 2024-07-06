@@ -31,7 +31,7 @@ namespace ECommerce.Application.UseCases.Users.Commands
             var passwordHash = _passwordHasher.GenerateHash(request.Password);
 
             var userResult = User.Create(Guid.NewGuid(), request.UserName, passwordHash, request.UserType, 
-                                         request.Email, request.FirstName, request.LastName);
+                                         request.Email, request.FirstName, request.LastName, roles.ToList());
 
             if (userResult.IsFailure)
                 return Result.Failure<Guid>(userResult.Error);
