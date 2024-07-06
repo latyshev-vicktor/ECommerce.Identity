@@ -41,10 +41,11 @@ namespace ECommerce.Domain.Entities
         #endregion
 
         public static Result<User> Create(Guid userId, string userName, string password,
-            UserType userType, string email, string firstName, string lastName)
+            int userType, string email, string firstName, string lastName)
         {
             if (string.IsNullOrEmpty(userName)) return Result.Failure<User>("User name не может быть пустым");
             if (string.IsNullOrWhiteSpace(password)) return Result.Failure<User>("Пароль не может быть пустым");
+            if (!Enum.TryParse(userType.ToString(), out UserType userTypeEnum)) return Result.Failure<User>("Некорректно переданный тип пользователя");
 
             var emailResult = Email.Create(email);
             if (emailResult.IsFailure)
@@ -54,7 +55,7 @@ namespace ECommerce.Domain.Entities
             if (fullNameResult.IsFailure)
                 return Result.Failure<User>(fullNameResult.Error);
 
-            return Result.Success(new User(userId, userName, password, userType, emailResult.Value, fullNameResult.Value));
+            return Result.Success(new User(userId, userName, password, userTypeEnum, emailResult.Value, fullNameResult.Value));
         }
 
         #region DDD методы
