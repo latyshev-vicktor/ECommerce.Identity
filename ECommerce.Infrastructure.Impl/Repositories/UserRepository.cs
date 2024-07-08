@@ -50,6 +50,7 @@ namespace ECommerce.Infrastructure.Impl.Repositories
 
         public void Update(User user)
         {
+            user.MakeModify();
             _dbContext.Users.Update(user);
         }
 

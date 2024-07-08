@@ -3,6 +3,7 @@ using ECommerce.Application.Services;
 using ECommerce.DataAccess.Postgres;
 using ECommerce.Domain.SeedWorks;
 using MediatR;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace ECommerce.Infrastructure.Impl.Services
 {
@@ -10,6 +11,21 @@ namespace ECommerce.Infrastructure.Impl.Services
     {
         private readonly ECommerceIdentityDbContext _dbContext = dbContext;
         private readonly IPublisher _publisher = publisher;
+
+        public async Task<IDbContextTransaction> BeginTransaction(CancellationToken cancel)
+        {
+            return await _dbContext.Database.BeginTransactionAsync(cancel);
+        }
+
+        public async Task CommitTransaction(CancellationToken cancel)
+        {
+            await _dbContext.Database.CommitTransactionAsync(cancel);
+        }
+
+        public async Task RollbackTransaction(CancellationToken cancel)
+        {
+            await _dbContext.Database.RollbackTransactionAsync(cancel);
+        }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {

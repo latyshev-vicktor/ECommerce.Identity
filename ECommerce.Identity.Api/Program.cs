@@ -2,6 +2,7 @@ using ECommerce.Application;
 using ECommerce.DataAccess.Postgres;
 using System.Text.Json.Serialization;
 using ECommerce.Infrastructure.Impl;
+using ECommerce.Api.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,15 @@ builder.Services.AddPostgres(builder.Configuration)
                 .AddApplication()
                 .AddInfrastructure();
 
+builder.Services.AddScoped<DbInitializer>();
+
 var app = builder.Build();
+
+using(var scope = app.Services.CreateScope())
+{
+    var dbInitializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
+    dbInitializer.Initializer(new CancellationToken()).GetAwaiter().GetResult();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

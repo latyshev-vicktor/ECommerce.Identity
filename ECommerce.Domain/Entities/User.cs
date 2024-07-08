@@ -36,6 +36,9 @@ namespace ECommerce.Domain.Entities
             UserType = userType;
             Email = email;
             FullName = fullName;
+            CreatedDate = DateTimeOffset.UtcNow;
+
+            MakeModify();
             AddRoles(roles);
 
             AddDomainEvent(new CreatedUserEvent(userId, userName, email.Value));
