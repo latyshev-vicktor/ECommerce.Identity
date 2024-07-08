@@ -26,14 +26,22 @@ namespace ECommerce.Infrastructure.Impl.Repositories
             _dbContext.Roles.Remove(role);
         }
 
-        public async Task<Role?> FirstOrDefault(Expression<Func<Role, bool>> spec, CancellationToken cancellationToken)
+        public async Task<Role?> FirstOrDefault(Expression<Func<Role, bool>> spec, CancellationToken cancellationToken, params Expression<Func<Role, object>>[] includes)
         {
-            return await _dbContext.Roles.Where(spec).FirstOrDefaultAsync(cancellationToken);
+            var dbQuery = _dbContext.Roles.Where(spec);
+            if (includes != null)
+                dbQuery = includes.Aggregate(dbQuery, (current, include) => current.Include(include));
+
+            return await dbQuery.FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<IReadOnlyList<Role>> GetList(Expression<Func<Role, bool>> spec, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<Role>> GetList(Expression<Func<Role, bool>> spec, CancellationToken cancellationToken, params Expression<Func<Role, object>>[] includes)
         {
-            return await _dbContext.Roles.Where(spec).ToListAsync(cancellationToken);
+            var dbQuery = _dbContext.Roles.Where(spec);
+            if (includes != null)
+                dbQuery = includes.Aggregate(dbQuery, (current, include) => current.Include(include));
+
+            return await dbQuery.ToListAsync(cancellationToken);
         }
 
         public async Task InsertAsync(Role role, CancellationToken cancellationToken)
