@@ -1,5 +1,6 @@
 ﻿using ECommerce.Api.Contracts;
 using ECommerce.Application.UseCases.Users.Commands;
+using ECommerce.Application.UseCases.Users.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,23 @@ namespace ECommerce.Api.Controllers
 
             //TODO: вынести в какой-нибудь extension метод
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        }
+
+        [HttpPost("login")]
+        [SwaggerOperation("Авторизация пользователя")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            var query = new LoginQuery(request.Email, request.Password);
+
+            var result = await _mediator.Send(query);
+
+            if (result.IsSuccess)
+            {
+                HttpContext.Response.Cookies.Append("access_token", result.Value);
+                return Ok(result.Value);
+            }
+
+            return BadRequest(result.Error);
         }
     }
 }

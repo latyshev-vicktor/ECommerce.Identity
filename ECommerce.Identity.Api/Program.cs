@@ -3,6 +3,8 @@ using ECommerce.DataAccess.Postgres;
 using System.Text.Json.Serialization;
 using ECommerce.Infrastructure.Impl;
 using ECommerce.Api.Helpers;
+using ECommerce.Application.Options;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,8 @@ builder.Services.AddPostgres(builder.Configuration)
                 .AddInfrastructure();
 
 builder.Services.AddScoped<DbInitializer>();
+builder.Services.Configure<JwtOptions>(options => builder.Configuration.GetSection(JwtOptions.Name).Bind(options));
+builder.Services.AddSingleton(x => x.GetService<IOptions<JwtOptions>>()!.Value);
 
 var app = builder.Build();
 
