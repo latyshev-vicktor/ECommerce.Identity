@@ -9,7 +9,7 @@ namespace ECommerce.Domain.Repositories
         Task<long> CountAsync(Expression<Func<User, bool>> spec, CancellationToken cancellationToken);
         void Delete(User user);
         Task<User?> FirstOrDefault(Expression<Func<User, bool>> spec, CancellationToken cancellationToken, params Expression<Func<User, object>>[] includes);
-        Task<HashSet<Permission>> GetAllPermissionsByUserId(Guid userId, CancellationToken cancellationToken);
+        Task<User?> GetUserWithPermissions(Expression<Func<User, bool>> spec, CancellationToken cancellationToken);
         Task<IReadOnlyList<User>> GetList(Expression<Func<User, bool>> spec, CancellationToken cancellationToken, params Expression<Func<User, object>>[] includes);
         Task InsertAsync(User user, CancellationToken cancellationToken);
         void Update(User user);

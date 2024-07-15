@@ -2,6 +2,7 @@
 using ECommerce.Domain.Entities;
 using ECommerce.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using NSpecifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,20 +60,16 @@ namespace ECommerce.Infrastructure.Impl.Repositories
             _dbContext.Users.Remove(user);
         }
 
-        public async Task<HashSet<Permission>> GetAllPermissionsByUserId(Guid userId, CancellationToken cancellationToken)
+        public async Task<User?> GetUserWithPermissions(Expression<Func<User, bool>> spec, CancellationToken cancellationToken)
         {
             var user = await _dbContext.Users
-                                 .AsNoTracking()
-                                 .Where(x => !x.IsBlocked && x.Id == userId)
-                                 .Include(x => x.Roles)
-                                 .ThenInclude(x => x.Permissions)
-                                 .AsSplitQuery()
-                                 .FirstOrDefaultAsync(cancellationToken);
+                            .AsNoTracking()
+                            .Include(x => x.Roles)
+                                .ThenInclude(x => x.Permissions)
+                            .AsSplitQuery()
+                            .FirstOrDefaultAsync(spec, cancellationToken);
 
-            if (user == null)
-                throw new ArgumentNullException("Не найден пользователь по переданному идентификатору");
-
-            return user.Roles.SelectMany(x => x.Permissions).ToHashSet();
+            return user;
         }
     }
 }
