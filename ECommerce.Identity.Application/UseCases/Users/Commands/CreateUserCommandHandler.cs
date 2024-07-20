@@ -41,7 +41,7 @@ namespace ECommerce.Application.UseCases.Users.Commands
             await _userRepository.InsertAsync(userResult.Value, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return userResult.Value.Id;
+            return ExecutionResult.Success(userResult.Value.Id);
         }
     }
 }

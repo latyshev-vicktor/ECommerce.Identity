@@ -66,11 +66,11 @@ namespace ECommerce.Domain.Entities
 
             var emailResult = Email.Create(email);
             if (emailResult.IsFailure)
-                return Result.Failure<User>(emailResult.Error);
+                return ExecutionResult.Failure<User>(emailResult.Error);
 
             var fullNameResult = FullName.Create(firstName, lastName);
             if (fullNameResult.IsFailure)
-                return Result.Failure<User>(fullNameResult.Error);
+                return ExecutionResult.Failure<User>(fullNameResult.Error);
 
             return ExecutionResult.Success(new User(userId, userName, password, userTypeEnum, emailResult.Value, fullNameResult.Value, roles));
         }
