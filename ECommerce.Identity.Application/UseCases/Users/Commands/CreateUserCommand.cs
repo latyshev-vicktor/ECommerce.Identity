@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using ECommerce.Domain.Common;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,5 @@ namespace ECommerce.Application.UseCases.Users.Commands
         string Email,
         string Password,
         int UserType,
-        Guid[] RoleIds) : IRequest<Result<Guid>>;
+        Guid[] RoleIds) : IRequest<IExecutionResult<Guid>>;
 }

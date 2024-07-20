@@ -1,6 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
+using CSharpFunctionalExtensions.ValueTasks;
+using ECommerce.Domain.Common;
 using ECommerce.Domain.DomainEvents;
 using ECommerce.Domain.Enums;
+using ECommerce.Domain.Errors;
 using ECommerce.Domain.SeedWorks;
 using ECommerce.Domain.ValueObjects;
 
@@ -45,12 +48,21 @@ namespace ECommerce.Domain.Entities
         }
         #endregion
 
-        public static Result<User> Create(Guid userId, string userName, string password,
-            int userType, string email, string firstName, string lastName, List<Role> roles)
+        public static IExecutionResult<User> Create(
+            Guid userId, 
+            string userName, 
+            string password,
+            int userType, 
+            string email, 
+            string firstName, 
+            string lastName, 
+            List<Role> roles)
         {
-            if (string.IsNullOrEmpty(userName)) return Result.Failure<User>("User name не может быть пустым");
-            if (string.IsNullOrWhiteSpace(password)) return Result.Failure<User>("Пароль не может быть пустым");
-            if (!Enum.TryParse(userType.ToString(), out UserType userTypeEnum)) return Result.Failure<User>("Некорректно переданный тип пользователя");
+            if (string.IsNullOrEmpty(userName)) return ExecutionResult.Failure<User>(UserErrors.UserNameNotBeEmpty());
+            
+            if (string.IsNullOrWhiteSpace(password)) return ExecutionResult.Failure<User>(UserErrors.PasswordNotBeEmplty());
+            
+            if (!Enum.TryParse(userType.ToString(), out UserType userTypeEnum)) return ExecutionResult.Failure<User>(UserErrors.NotCorrentUserType());
 
             var emailResult = Email.Create(email);
             if (emailResult.IsFailure)
@@ -60,7 +72,7 @@ namespace ECommerce.Domain.Entities
             if (fullNameResult.IsFailure)
                 return Result.Failure<User>(fullNameResult.Error);
 
-            return Result.Success(new User(userId, userName, password, userTypeEnum, emailResult.Value, fullNameResult.Value, roles));
+            return ExecutionResult.Success(new User(userId, userName, password, userTypeEnum, emailResult.Value, fullNameResult.Value, roles));
         }
 
         #region DDD методы
