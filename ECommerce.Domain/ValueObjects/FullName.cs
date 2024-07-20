@@ -1,4 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
+using ECommerce.Domain.Common;
+using ECommerce.Domain.Errors;
 
 namespace ECommerce.Domain.ValueObjects
 {
@@ -14,12 +16,13 @@ namespace ECommerce.Domain.ValueObjects
             LastName = lastName;
         }
 
-        public static Result<FullName> Create(string firstName, string lastName)
+        public static IExecutionResult<FullName> Create(string firstName, string lastName)
         {
-            if (string.IsNullOrWhiteSpace(firstName)) return Result.Failure<FullName>("Имя пользователя не может быть пустым");
-            if (string.IsNullOrWhiteSpace(lastName)) return Result.Failure<FullName>("Фамилия пользователя не может быть пустой");
+            if (string.IsNullOrWhiteSpace(firstName)) return ExecutionResult.Failure<FullName>(UserErrors.FirstNameNotBeEmpty());
 
-            return Result.Success(new FullName(firstName, lastName));
+            if (string.IsNullOrWhiteSpace(lastName)) return ExecutionResult.Failure<FullName>(UserErrors.LastNameNotBeEmpty());
+
+            return ExecutionResult.Success(new FullName(firstName, lastName));
         }
 
         protected override IEnumerable<IComparable> GetEqualityComponents()

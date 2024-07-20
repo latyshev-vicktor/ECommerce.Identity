@@ -26,7 +26,7 @@ namespace ECommerce.Api.Controllers
             var result = await _mediator.Send(command);
 
             //TODO: вынести в какой-нибудь extension метод
-            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error.Message);
         }
 
         [HttpPost("login")]

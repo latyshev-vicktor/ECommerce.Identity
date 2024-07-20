@@ -1,4 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
+using ECommerce.Domain.Common;
+using ECommerce.Domain.Errors;
 using System.Text.RegularExpressions;
 
 namespace ECommerce.Domain.ValueObjects
@@ -11,13 +13,13 @@ namespace ECommerce.Domain.ValueObjects
 
         protected Email(string email) => Value = email;
 
-        public static Result<Email> Create(string email)
+        public static IExecutionResult<Email> Create(string email)
         {
-            if(string.IsNullOrWhiteSpace(email)) return Result.Failure<Email>("Email не может быть пустым");
+            if(string.IsNullOrWhiteSpace(email)) return ExecutionResult.Failure<Email>(UserErrors.EmailNotBeEmpty());
 
-            if (!Regex.IsMatch(email, EMAIL_PATTREN)) return Result.Failure<Email>("Введенное значение не является email");
+            if (!Regex.IsMatch(email, EMAIL_PATTREN)) return ExecutionResult.Failure<Email>(UserErrors.EmailNotValid());
 
-            return Result.Success(new Email(email));
+            return ExecutionResult.Success(new Email(email));
         }
 
         protected override IEnumerable<IComparable> GetEqualityComponents()
