@@ -35,6 +35,9 @@ namespace ECommerce.Application.UseCases.Users.Commands
             var passwordHash = _passwordHasher.GenerateHash(request.Password);
 
             var roles = await _roleRepository.GetList(RoleSpecification.ByIds(request.RoleIds), cancellationToken);
+            if (!roles.Any())
+                return ExecutionResult.Failure<Guid>(UserErrors.RolesNotFound());
+
             var userResult = User.Create(Guid.NewGuid(), request.UserName, passwordHash, request.UserType, 
                                          request.Email, request.FirstName, request.LastName, roles.ToList());
 
