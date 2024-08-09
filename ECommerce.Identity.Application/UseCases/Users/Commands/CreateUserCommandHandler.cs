@@ -6,6 +6,7 @@ using ECommerce.Domain.Entities;
 using ECommerce.Application.Services;
 using ECommerce.Domain.Common;
 using ECommerce.Domain.Errors;
+using NSpecifications;
 
 namespace ECommerce.Application.UseCases.Users.Commands
 {
@@ -22,16 +23,18 @@ namespace ECommerce.Application.UseCases.Users.Commands
 
         public async Task<IExecutionResult<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var existUserByEmail = await _userRepository.AnyAsync(UserSpecification.ByEmail(request.Email), cancellationToken);
-            if (existUserByEmail)
-                return ExecutionResult.Failure<Guid>(UserErrors.ExistByEmail());
+            var spec = Spec<User>.None;
 
-            var roles = await _roleRepository.GetList(RoleSpecification.ByIds(request.RoleIds), cancellationToken);
-            if (!roles.Any())
-                return ExecutionResult.Failure<Guid>(UserErrors.RolesNotFound());
+            spec |= UserSpecification.ByEmail(request.Email);
+            spec |= UserSpecification.ByUserName(request.UserName);
+
+            var existUserByEmailAndUserName = await _userRepository.AnyAsync(spec, cancellationToken);
+            if (existUserByEmailAndUserName)
+                return ExecutionResult.Failure<Guid>(UserErrors.ExistUserByEmailOrUserName());
 
             var passwordHash = _passwordHasher.GenerateHash(request.Password);
 
+            var roles = await _roleRepository.GetList(RoleSpecification.ByIds(request.RoleIds), cancellationToken);
             var userResult = User.Create(Guid.NewGuid(), request.UserName, passwordHash, request.UserType, 
                                          request.Email, request.FirstName, request.LastName, roles.ToList());
 

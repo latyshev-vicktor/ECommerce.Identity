@@ -1,20 +1,40 @@
 ﻿using ECommerce.Domain.Common;
+using System.Runtime.CompilerServices;
 
 namespace ECommerce.Domain.Errors
 {
+    public static class UserErrorIds
+    {
+        public const string NotFoundById = "По данному идентификатору пользователь не найден";
+        public const string ExistByEmail = "Пользователь с таким email уже зарегестрирован";
+        public const string BlockedUser = "Пользователь заблокирован";
+        public const string RolesNotFound = "Перечень ролей по переданным идентификаторам не найдены";
+        public const string UserNameNotBeEmpty = "User name не может быть пустым";
+        public const string PasswordNotBeEmpty = "Пароль не может быть пустым";
+        public const string NotCorrectUserType = "Некорректно переданный тип пользователя";
+        public const string EmailNotBeEmpty = "Email не может быть пустым";
+        public const string EmailNotValid = "Введенное значение не является email";
+        public const string FirstNameNotBeEmpty = "Имя пользователя не может быть пустым";
+        public const string LastNameNotBeEmpty = "Фамилия пользователя не может быть пустой";
+        public const string NotCorrectEmailOrPassword = "Неправильный email или пароль";
+        public const string ExistUserByEmailOrUserName = "Пользователь с таким User name или email уже существует";
+    }
+
     public static class UserErrors
     {
-        public static Error NotFoundById() => new Error(ResultCode.NotFound, "По данному идентификатору пользователь не найден");
-        public static Error ExistByEmail() => new Error(ResultCode.Conflict, "Пользователь с таким email уже зарегестрирован");
-        public static Error BlockedUser() => new Error(ResultCode.Conflict, "Пользователь заблокирован");
-        public static Error RolesNotFound() => new Error(ResultCode.NotFound, "Перечень ролей по переданным идентификаторам не найдены");
+        public static Error NotFoundById() => new Error(ResultCode.NotFound, UserErrorIds.NotFoundById);
+        public static Error ExistByEmail() => new Error(ResultCode.BadRequest, UserErrorIds.ExistByEmail);
+        public static Error BlockedUser() => new Error(ResultCode.BadRequest, UserErrorIds.BlockedUser);
+        public static Error RolesNotFound() => new Error(ResultCode.NotFound, UserErrorIds.NotFoundById);
 
-        public static Error UserNameNotBeEmpty() => new Error(ResultCode.BadRequest, "User name не может быть пустым");
-        public static Error PasswordNotBeEmplty() => new Error(ResultCode.BadRequest, "Пароль не может быть пустым");
-        public static Error NotCorrentUserType() => new Error(ResultCode.BadRequest, "Некорректно переданный тип пользователя");
-        public static Error EmailNotBeEmpty() => new Error(ResultCode.BadRequest, "Email не может быть пустым");
-        public static Error EmailNotValid() => new Error(ResultCode.BadRequest, "Введенное значение не является email");
-        public static Error FirstNameNotBeEmpty() => new Error(ResultCode.BadRequest, "Имя пользователя не может быть пустым");
-        public static Error LastNameNotBeEmpty() => new Error(ResultCode.BadRequest, "Фамилия пользователя не может быть пустой");
+        public static Error UserNameNotBeEmpty() => new Error(ResultCode.BadRequest, UserErrorIds.UserNameNotBeEmpty);
+        public static Error PasswordNotBeEmpty() => new Error(ResultCode.BadRequest, UserErrorIds.PasswordNotBeEmpty);
+        public static Error NotCorrentUserType() => new Error(ResultCode.BadRequest, UserErrorIds.NotCorrectUserType);
+        public static Error EmailNotBeEmpty() => new Error(ResultCode.BadRequest, UserErrorIds.EmailNotBeEmpty);
+        public static Error EmailNotValid() => new Error(ResultCode.BadRequest, UserErrorIds.EmailNotValid);
+        public static Error FirstNameNotBeEmpty() => new Error(ResultCode.BadRequest, UserErrorIds.FirstNameNotBeEmpty);
+        public static Error LastNameNotBeEmpty() => new Error(ResultCode.BadRequest, UserErrorIds.LastNameNotBeEmpty);
+        public static Error NotCorrentEmailOrPassword() => new Error(ResultCode.BadRequest, UserErrorIds.NotCorrectEmailOrPassword);
+        public static Error ExistUserByEmailOrUserName() => new Error(ResultCode.BadRequest, UserErrorIds.ExistUserByEmailOrUserName);
     }
 }

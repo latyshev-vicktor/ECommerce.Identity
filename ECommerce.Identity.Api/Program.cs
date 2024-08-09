@@ -5,6 +5,7 @@ using ECommerce.Infrastructure.Impl;
 using ECommerce.Api.Helpers;
 using ECommerce.Application.Options;
 using Microsoft.Extensions.Options;
+using ECommerce.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,8 @@ builder.Services.AddPostgres(builder.Configuration)
 builder.Services.AddScoped<DbInitializer>();
 builder.Services.Configure<JwtOptions>(options => builder.Configuration.GetSection(JwtOptions.Name).Bind(options));
 builder.Services.AddSingleton(x => x.GetService<IOptions<JwtOptions>>()!.Value);
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
@@ -33,6 +36,8 @@ using(var scope = app.Services.CreateScope())
     var dbInitializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
     dbInitializer.Initializer(new CancellationToken()).GetAwaiter().GetResult();
 }
+
+app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
