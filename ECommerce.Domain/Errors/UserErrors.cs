@@ -1,5 +1,4 @@
 ﻿using ECommerce.Domain.Common;
-using System.Runtime.CompilerServices;
 
 namespace ECommerce.Domain.Errors
 {
@@ -23,9 +22,9 @@ namespace ECommerce.Domain.Errors
     public static class UserErrors
     {
         public static Error NotFoundById() => new Error(ResultCode.NotFound, UserErrorIds.NotFoundById);
-        public static Error ExistByEmail() => new Error(ResultCode.BadRequest, UserErrorIds.ExistByEmail);
-        public static Error BlockedUser() => new Error(ResultCode.BadRequest, UserErrorIds.BlockedUser);
-        public static Error RolesNotFound() => new Error(ResultCode.NotFound, UserErrorIds.NotFoundById);
+        public static Error ExistByEmail() => new Error(ResultCode.Conflict, UserErrorIds.ExistByEmail);
+        public static Error BlockedUser() => new Error(ResultCode.Conflict, UserErrorIds.BlockedUser);
+        public static Error RolesNotFound() => new Error(ResultCode.NotFound, UserErrorIds.RolesNotFound);
 
         public static Error UserNameNotBeEmpty() => new Error(ResultCode.BadRequest, UserErrorIds.UserNameNotBeEmpty);
         public static Error PasswordNotBeEmpty() => new Error(ResultCode.BadRequest, UserErrorIds.PasswordNotBeEmpty);
@@ -35,6 +34,6 @@ namespace ECommerce.Domain.Errors
         public static Error FirstNameNotBeEmpty() => new Error(ResultCode.BadRequest, UserErrorIds.FirstNameNotBeEmpty);
         public static Error LastNameNotBeEmpty() => new Error(ResultCode.BadRequest, UserErrorIds.LastNameNotBeEmpty);
         public static Error NotCorrentEmailOrPassword() => new Error(ResultCode.BadRequest, UserErrorIds.NotCorrectEmailOrPassword);
-        public static Error ExistUserByEmailOrUserName() => new Error(ResultCode.BadRequest, UserErrorIds.ExistUserByEmailOrUserName);
+        public static Error ExistUserByEmailOrUserName() => new Error(ResultCode.Conflict, UserErrorIds.ExistUserByEmailOrUserName);
     }
 }

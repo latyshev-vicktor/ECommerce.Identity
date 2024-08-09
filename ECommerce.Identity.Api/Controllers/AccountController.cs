@@ -1,4 +1,5 @@
 ﻿using ECommerce.Api.Contracts;
+using ECommerce.Api.Extensions;
 using ECommerce.Application.UseCases.Users.Commands;
 using ECommerce.Application.UseCases.Users.Queries;
 using MediatR;
@@ -24,9 +25,7 @@ namespace ECommerce.Api.Controllers
                                                 request.UserType, request.RoleIds);
 
             var result = await _mediator.Send(command);
-
-            //TODO: вынести в какой-нибудь extension метод
-            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error.Message);
+            return result.AsHttpResult();
         }
 
         [HttpPost("login")]
@@ -38,12 +37,9 @@ namespace ECommerce.Api.Controllers
             var result = await _mediator.Send(query);
 
             if (result.IsSuccess)
-            {
                 HttpContext.Response.Cookies.Append("access_token", result.Value);
-                return Ok(result.Value);
-            }
 
-            return BadRequest(result.Error);
+            return result.AsHttpResult();
         }
     }
 }
