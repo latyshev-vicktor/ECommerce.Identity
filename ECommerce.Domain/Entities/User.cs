@@ -60,7 +60,7 @@ namespace ECommerce.Domain.Entities
         {
             if (string.IsNullOrEmpty(userName)) return ExecutionResult.Failure<User>(UserErrors.UserNameNotBeEmpty());
             
-            if (string.IsNullOrWhiteSpace(password)) return ExecutionResult.Failure<User>(UserErrors.PasswordNotBeEmplty());
+            if (string.IsNullOrWhiteSpace(password)) return ExecutionResult.Failure<User>(UserErrors.PasswordNotBeEmpty());
             
             if (!Enum.TryParse(userType.ToString(), out UserType userTypeEnum)) return ExecutionResult.Failure<User>(UserErrors.NotCorrentUserType());
 

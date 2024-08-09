@@ -1,14 +1,12 @@
-﻿using ECommerce.DataAccess.Postgres;
+﻿using CSharpFunctionalExtensions;
+using ECommerce.DataAccess.Postgres;
+using ECommerce.Domain.DTO.Permission;
+using ECommerce.Domain.DTO.User;
 using ECommerce.Domain.Entities;
+using ECommerce.Domain.Extensions;
 using ECommerce.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
-using NSpecifications;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECommerce.Infrastructure.Impl.Repositories
 {
@@ -42,6 +40,30 @@ namespace ECommerce.Infrastructure.Impl.Repositories
             }
 
             return await dbQuery.ToListAsync(cancellationToken);
+        }
+
+        public async Task<IReadOnlyList<UserDto>> GetAllUsersWithPermissions(CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Users
+                .Where(x => !x.IsBlocked)
+                .Include(x => x.Roles)
+                .ThenInclude(x => x.Permissions)
+                .Select(x => new UserDto
+                {
+                    Id = x.Id,
+                    Email = x.Email.Value,
+                    UserName = x.UserName,
+                    FirstName = x.FullName.FirstName,
+                    LastName = x.FullName.LastName,
+                    UserType = x.UserType.GetDescription(),
+                    Permissions = x.Roles.SelectMany(x => x.Permissions).Select(x => new PermissionDto
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Description = x.Description,
+                    }).ToArray()
+                })
+                .ToListAsync(cancellationToken);
         }
 
         public async Task InsertAsync(User user, CancellationToken cancellationToken)
