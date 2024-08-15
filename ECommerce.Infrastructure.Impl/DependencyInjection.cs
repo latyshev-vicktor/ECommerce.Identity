@@ -20,6 +20,8 @@ namespace ECommerce.Infrastructure.Impl
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IPermissionRepository, PermissionRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+
             services.AddScoped<IJwtProvider, JwtProvider>();
 
             return services;

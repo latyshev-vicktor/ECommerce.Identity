@@ -37,7 +37,7 @@ namespace ECommerce.Api.Controllers
             var result = await _mediator.Send(query);
 
             if (result.IsSuccess)
-                HttpContext.Response.Cookies.Append("access_token", result.Value);
+                HttpContext.Response.Cookies.Append("access_token", result.Value.AccessToken);
 
             return result.AsHttpResult();
         }

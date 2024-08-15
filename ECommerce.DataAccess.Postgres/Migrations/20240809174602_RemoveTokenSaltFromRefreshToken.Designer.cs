@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using ECommerce.DataAccess.Postgres;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerce.DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(ECommerceIdentityDbContext))]
-    partial class ECommerceIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240809174602_RemoveTokenSaltFromRefreshToken")]
+    partial class RemoveTokenSaltFromRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,10 +63,12 @@ namespace ECommerce.DataAccess.Postgres.Migrations
                     b.Property<DateTimeOffset>("ExpiryDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset>("ModifyDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<bool>("IsRevoked")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                    b.Property<DateTimeOffset?>("RevokedDate")
+                    b.Property<DateTimeOffset>("ModifyDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("TokenHash")

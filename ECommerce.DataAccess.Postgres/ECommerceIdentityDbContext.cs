@@ -13,6 +13,8 @@ namespace ECommerce.DataAccess.Postgres
         public DbSet<RoleUser> RoleUsers { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
 
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
         public ECommerceIdentityDbContext(DbContextOptions<ECommerceIdentityDbContext> options) : base(options)
         {
             
@@ -27,6 +29,7 @@ namespace ECommerce.DataAccess.Postgres
             modelBuilder.ApplyConfiguration(new PermissionConfig());
             modelBuilder.ApplyConfiguration(new RoleUserConfig());
             modelBuilder.ApplyConfiguration(new RolePermissionConfig());
+            modelBuilder.ApplyConfiguration(new RefreshTokenConfig());
         }
     }
 }
