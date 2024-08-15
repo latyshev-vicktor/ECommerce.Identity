@@ -16,10 +16,10 @@ namespace ECommerce.Infrastructure.Impl.Repositories
         private readonly ECommerceIdentityDbContext _dbContext = dbContext;
 
         public async Task<bool> AnyAsync(Expression<Func<Role, bool>> spec, CancellationToken cancellationToken)
-            => await _dbContext.Roles.AnyAsync(spec, cancellationToken);
+            => await _dbContext.Roles.AsNoTracking().AnyAsync(spec, cancellationToken);
 
         public async Task<long> CountAsync(Expression<Func<Role, bool>> spec, CancellationToken cancellationToken)
-            => await _dbContext.Roles.CountAsync(spec, cancellationToken);
+            => await _dbContext.Roles.AsNoTracking().CountAsync(spec, cancellationToken);
 
         public void Delete(Role role)
         {

@@ -15,10 +15,10 @@ namespace ECommerce.Infrastructure.Impl.Repositories
         private readonly ECommerceIdentityDbContext _dbContext = dbContext;
 
         public async Task<bool> AnyAsync(Expression<Func<User, bool>> spec, CancellationToken cancellationToken)
-            => await _dbContext.Users.AnyAsync(spec, cancellationToken);
+            => await _dbContext.Users.AsNoTracking().AnyAsync(spec, cancellationToken);
 
         public async Task<long> CountAsync(Expression<Func<User, bool>> spec, CancellationToken cancellationToken)
-            => await _dbContext.Users.CountAsync(spec, cancellationToken);
+            => await _dbContext.Users.AsNoTracking().CountAsync(spec, cancellationToken);
 
         public async Task<User?> FirstOrDefault(Expression<Func<User, bool>> spec, CancellationToken cancellationToken, params Expression<Func<User, object>>[] includes)
         {
