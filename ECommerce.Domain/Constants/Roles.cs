@@ -53,8 +53,8 @@ namespace ECommerce.Domain.Constants
         {
 
             Id = Guid.Parse("d7b9a088-a7ce-4f34-9d66-1aec7d62423e"),
-            Name = Roles.Customer,
-            Description = Roles.Customer.GetDisplay<Roles>(),
+            Name = Roles.Salesman,
+            Description = Roles.Salesman.GetDisplay<Roles>(),
             Permissions =
             [
                 DefaultPermissions.CreateProduct.Id,

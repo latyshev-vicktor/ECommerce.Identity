@@ -61,7 +61,7 @@ namespace ECommerce.Api.Helpers
                     if (permission.Name != existPermission.Name || permission.Description != existPermission.Description)
                     {
                         existPermission.SetName(permission.Name);
-                        existPermission.SetDescription(permission.Description.GetDisplay<Permissions>());
+                        existPermission.SetDescription(permission.Description);
                         existPermission.MakeModify();
 
                         _permissionRepository.Update(existPermission);
@@ -99,7 +99,7 @@ namespace ECommerce.Api.Helpers
                     if (existRole.Name != role.Name || existRole.Description != role.Description)
                     {
                         existRole.SetName(role.Name);
-                        existRole.SetDescription(role.Description.GetDisplay<Roles>());
+                        existRole.SetDescription(role.Description);
                     }
 
                     _roleRepository.Update(existRole);
