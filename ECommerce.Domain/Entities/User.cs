@@ -19,6 +19,11 @@ namespace ECommerce.Domain.Entities
 
         public List<Role> Roles = [];
 
+        private List<RefreshToken> _refreshTokens = [];
+
+        public IReadOnlyList<RefreshToken> RefreshTokens => _refreshTokens;
+
+
         #region Value Objects
         public Email Email { get; private set; }
         public FullName FullName { get; private set; }
@@ -99,6 +104,12 @@ namespace ECommerce.Domain.Entities
                 if (Roles.Any(x => x.Id == role.Id))
                     Roles.Remove(role);
             }
+        }
+
+        public void AddRefreshToken(RefreshToken refreshToken)
+        {
+            if (!RefreshTokens.Any(x => x.Id == refreshToken.Id))
+                _refreshTokens.Add(refreshToken);
         }
         #endregion
     }

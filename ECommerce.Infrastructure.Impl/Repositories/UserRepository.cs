@@ -45,6 +45,7 @@ namespace ECommerce.Infrastructure.Impl.Repositories
         public async Task<IReadOnlyList<UserDto>> GetAllUsersWithPermissions(CancellationToken cancellationToken = default)
         {
             return await _dbContext.Users
+                .AsNoTracking()
                 .Where(x => !x.IsBlocked)
                 .Include(x => x.Roles)
                 .ThenInclude(x => x.Permissions)
@@ -85,9 +86,9 @@ namespace ECommerce.Infrastructure.Impl.Repositories
         public async Task<User?> GetUserWithPermissions(Expression<Func<User, bool>> spec, CancellationToken cancellationToken)
         {
             var user = await _dbContext.Users
-                            .AsNoTracking()
                             .Include(x => x.Roles)
                                 .ThenInclude(x => x.Permissions)
+                            .Include(x => x.RefreshTokens)
                             .AsSplitQuery()
                             .FirstOrDefaultAsync(spec, cancellationToken);
 

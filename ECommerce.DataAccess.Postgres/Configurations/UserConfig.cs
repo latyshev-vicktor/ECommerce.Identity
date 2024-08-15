@@ -33,6 +33,9 @@ namespace ECommerce.DataAccess.Postgres.Configurations
                     l => l.HasOne(x => x.Role).WithMany().HasForeignKey(x => x.RoleId),
                     r => r.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId),
                     k => k.HasKey(x => new {x.UserId, x.RoleId}));
+
+            var navigation = builder.Metadata.FindNavigation(nameof(User.RefreshTokens));
+            navigation!.SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }
